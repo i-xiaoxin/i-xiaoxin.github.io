@@ -1,0 +1,778 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/tab.png">
+  <link rel="icon" href="/img/tab.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="xiaoxinlore">
+  <meta name="keywords" content="java">
+  
+    <meta name="description" content="分布式缓存Redis运用场景1. 页面缓存Redis可将Web页面的内容片段，包括HTML，CSS和图片等静态数据，缓存到Redis实例，提高网站的访问性能。 比如在电商类应用中，热销商品展示、秒杀推荐等数据面临高并发读的压力，分布式缓存Redis的高并发及灵活扩展，可轻松支持此类应用。 2. 状态缓存Redis可将Session会话状态及应用横向扩展时的状态数据等缓存到DCS实例，实现状态数据共">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis缓存雪崩、缓存击穿、缓存穿透">
+<meta property="og:url" content="https://github.com/i-xiaoxin/2022/11/03/Redis%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%E3%80%81%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/index.html">
+<meta property="og:site_name" content="xiaoxinlore">
+<meta property="og:description" content="分布式缓存Redis运用场景1. 页面缓存Redis可将Web页面的内容片段，包括HTML，CSS和图片等静态数据，缓存到Redis实例，提高网站的访问性能。 比如在电商类应用中，热销商品展示、秒杀推荐等数据面临高并发读的压力，分布式缓存Redis的高并发及灵活扩展，可轻松支持此类应用。 2. 状态缓存Redis可将Session会话状态及应用横向扩展时的状态数据等缓存到DCS实例，实现状态数据共">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/b7031182f770a7a5b3c82eaf749f53b0.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/acb5f4e7ef24a524a53c39eb016f63d4.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/717343a0da7a1b05edab1d1cdf8f28e5.png">
+<meta property="article:published_time" content="2022-11-03T12:29:02.000Z">
+<meta property="article:modified_time" content="2022-11-04T06:01:35.749Z">
+<meta property="article:author" content="xiaoxinlore">
+<meta property="article:tag" content="Mysql">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/img_convert/b7031182f770a7a5b3c82eaf749f53b0.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Redis缓存雪崩、缓存击穿、缓存穿透 - xiaoxinlore</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"github.com","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>xiaoxinlore</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/article4.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Redis缓存雪崩、缓存击穿、缓存穿透"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-03 20:29" pubdate>
+          2022年11月3日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          47 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Redis缓存雪崩、缓存击穿、缓存穿透</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="分布式缓存Redis运用场景"><a href="#分布式缓存Redis运用场景" class="headerlink" title="分布式缓存Redis运用场景"></a>分布式缓存Redis运用场景</h1><h3 id="1-页面缓存"><a href="#1-页面缓存" class="headerlink" title="1. 页面缓存"></a>1. 页面缓存</h3><p>Redis可将Web页面的内容片段，包括HTML，CSS和图片等静态数据，缓存到Redis实例，提高网站的访问性能。</p>
+<p>比如在电商类应用中，热销商品展示、秒杀推荐等数据面临高并发读的压力，分布式缓存Redis的高并发及灵活扩展，可轻松支持此类应用。</p>
+<h3 id="2-状态缓存"><a href="#2-状态缓存" class="headerlink" title="2. 状态缓存"></a>2. 状态缓存</h3><p>Redis可将Session会话状态及应用横向扩展时的状态数据等缓存到DCS实例，实现状态数据共享。在应对游戏应用中爆发式增长的玩家数据存储和读写请求时，使用分布式缓存Redis可通过将热点数据放入缓存，加快用户端访问速度，提升用户体验。</p>
+<h3 id="3-应用对象缓存"><a href="#3-应用对象缓存" class="headerlink" title="3. 应用对象缓存"></a>3. 应用对象缓存</h3><p>Redis可作为服务层的二级缓存对外提供服务，减轻数据库的负载压力，加速应用访问。</p>
+<h3 id="4-事件缓存"><a href="#4-事件缓存" class="headerlink" title="4. 事件缓存"></a>4. 事件缓存</h3><p>Redis可提供针对事件流的连续查询（continuous query）处理技术，满足实时性需求。</p>
+<h1 id="Redis缓存问题"><a href="#Redis缓存问题" class="headerlink" title="Redis缓存问题"></a>Redis缓存问题</h1><p>在高并发的业务场景下，数据库大多数情况都是用户并发访问最薄弱的环节。所以，就需要使用redis做一个缓冲操作，让请求先访问到redis，而不是直接访问Mysql等数据库。这样可以大大缓解数据库的压力。缓存问题如下：</p>
+<ul>
+<li>缓存穿透</li>
+<li>缓存穿击</li>
+<li>缓存雪崩</li>
+<li>缓存污染</li>
+<li>缓存同步（缓存和数据库一致性）</li>
+</ul>
+<h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p><strong>缓存穿透</strong>是指<font color=red>缓存和数据库中都没有数据</font>，而用户不断发起请求则这些<font color=red>请求会穿过缓存直接访问数据库</font>，如发起为id为“-1”的数据或id为特别大不存在的数据。假如有恶意攻击，就可以利用这个漏洞，对数据库造成压力，甚至压垮数据库。</p>
+<img src="https://img-blog.csdnimg.cn/img_convert/b7031182f770a7a5b3c82eaf749f53b0.png" srcset="/img/loading.gif" lazyload style="zoom: 60%;" >
+
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>应对缓存穿透的方案，常见的方案有三种。</p>
+<ul>
+<li>第一种方案，非法请求的限制；</li>
+<li>第二种方案，缓存空值或者默认值；</li>
+<li>第三种方案，使用布隆过滤器快速判断数据是否存在，避免通过查询数据库来判断数据是否存在；</li>
+</ul>
+<p>针对后端，此处采用方案二</p>
+<p>缓存空对象：当存储层不命中时，<font color=red>创建空对象并将其缓存起来</font>，同时会<font color=red>设置一个过期时间</font>（避免控制占用更多的存储空间），之后再访问这个数据将会从缓存中获取，保护了后端数据源；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * 查询商品信息</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@param</span> itemId</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-meta">@Override</span><br>	<span class="hljs-keyword">public</span> TbItem <span class="hljs-title function_">selectItemInfo</span><span class="hljs-params">(Long itemId)</span> &#123;<br>		<span class="hljs-comment">//查询缓存</span><br>		<span class="hljs-type">TbItem</span> <span class="hljs-variable">tbItem</span> <span class="hljs-operator">=</span> (TbItem) redisClient.get(ITEM_INFO + <span class="hljs-string">&quot;:&quot;</span> + itemId + <span class="hljs-string">&quot;:&quot;</span>+ BASE);<br>		<span class="hljs-keyword">if</span>(tbItem!=<span class="hljs-literal">null</span>)&#123;<br>			<span class="hljs-keyword">return</span> tbItem;<br>		&#125;<br><br>		tbItem = tbItemMapper.selectByPrimaryKey(itemId);<br>		<span class="hljs-comment">/********************解决缓存穿透************************/</span><br>		<span class="hljs-keyword">if</span>(tbItem == <span class="hljs-literal">null</span>)&#123;<br>			<span class="hljs-comment">//把空对象保存到缓存</span><br>			redisClient.set(ITEM_INFO + <span class="hljs-string">&quot;:&quot;</span> + itemId + <span class="hljs-string">&quot;:&quot;</span>+ BASE,<span class="hljs-keyword">new</span> <span class="hljs-title class_">TbItem</span>());<br>			<span class="hljs-comment">//设置缓存的有效期</span><br>			redisClient.expire(ITEM_INFO + <span class="hljs-string">&quot;:&quot;</span> + itemId + <span class="hljs-string">&quot;:&quot;</span>+ BASE,<span class="hljs-number">30</span>);<br>			<span class="hljs-keyword">return</span> tbItem;<br>		&#125;<br>		<span class="hljs-comment">//把数据保存到缓存</span><br>		redisClient.set(ITEM_INFO + <span class="hljs-string">&quot;:&quot;</span> + itemId + <span class="hljs-string">&quot;:&quot;</span>+ BASE,tbItem);<br>		<span class="hljs-comment">//设置缓存的有效期</span><br>		redisClient.expire(ITEM_INFO + <span class="hljs-string">&quot;:&quot;</span> + itemId + <span class="hljs-string">&quot;:&quot;</span>+ BASE,ITEM_INFO_EXPIRE);<br>		<span class="hljs-keyword">return</span> tbItem;<br>	&#125;<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * 根据商品 ID 查询商品介绍</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@param</span> itemId</span><br><span class="hljs-comment">	 * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-meta">@Override</span><br>	<span class="hljs-keyword">public</span> TbItemDesc <span class="hljs-title function_">selectItemDescByItemId</span><span class="hljs-params">(Long itemId)</span> &#123;<br>		<span class="hljs-comment">//查询缓存</span><br>		<span class="hljs-type">TbItemDesc</span> <span class="hljs-variable">tbItemDesc</span> <span class="hljs-operator">=</span> (TbItemDesc) redisClient.get(<br>            	ITEM_INFO + <span class="hljs-string">&quot;:&quot;</span> + itemId + <span class="hljs-string">&quot;:&quot;</span>+ DESC);<br>		<span class="hljs-keyword">if</span>(tbItemDesc!=<span class="hljs-literal">null</span>)&#123;<br>			<span class="hljs-keyword">return</span> tbItemDesc;<br>		&#125;<br><br>		<span class="hljs-type">TbItemDescExample</span> <span class="hljs-variable">example</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TbItemDescExample</span>();<br>		TbItemDescExample.<span class="hljs-type">Criteria</span> <span class="hljs-variable">criteria</span> <span class="hljs-operator">=</span> example.createCriteria();<br>		criteria.andItemIdEqualTo(itemId);<br>		List&lt;TbItemDesc&gt; itemDescList =<br>				<span class="hljs-built_in">this</span>.tbItemDescMapper.selectByExampleWithBLOBs(example);<br>		<span class="hljs-keyword">if</span>(itemDescList!=<span class="hljs-literal">null</span> &amp;&amp; itemDescList.size()&gt;<span class="hljs-number">0</span>)&#123;<br>			<span class="hljs-comment">//把数据保存到缓存</span><br>			redisClient.set(ITEM_INFO + <span class="hljs-string">&quot;:&quot;</span> + itemId + <span class="hljs-string">&quot;:&quot;</span>+ DESC,itemDescList.get(<span class="hljs-number">0</span>));<br>			<span class="hljs-comment">//设置缓存的有效期</span><br>			redisClient.expire(ITEM_INFO + <span class="hljs-string">&quot;:&quot;</span> + itemId + <span class="hljs-string">&quot;:&quot;</span>+ DESC,ITEM_INFO_EXPIRE);<br>			<span class="hljs-keyword">return</span> itemDescList.get(<span class="hljs-number">0</span>);<br>		&#125;<br>		<span class="hljs-comment">/********************解决缓存穿透************************/</span><br>		<span class="hljs-comment">//把空对象保存到缓存</span><br>		redisClient.set(ITEM_INFO + <span class="hljs-string">&quot;:&quot;</span> + itemId + <span class="hljs-string">&quot;:&quot;</span>+ DESC,<span class="hljs-keyword">new</span> <span class="hljs-title class_">TbItemDesc</span>());<br>		<span class="hljs-comment">//设置缓存的有效期</span><br>		redisClient.expire(ITEM_INFO + <span class="hljs-string">&quot;:&quot;</span> + itemId + <span class="hljs-string">&quot;:&quot;</span>+ DESC,<span class="hljs-number">30</span>);<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>	&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h2><h3 id="问题描述-1"><a href="#问题描述-1" class="headerlink" title="问题描述"></a>问题描述</h3><p>缓存击穿，是指一个key非常热点，在不停的扛着大并发，大并发集中<font color=red>对一个key不停进行访问，当这个key在失效的瞬间，持续的大并发就穿破缓存，直接请求数据库</font>，就像在一个屏障上凿开了一个洞。</p>
+<img src="https://img-blog.csdnimg.cn/img_convert/acb5f4e7ef24a524a53c39eb016f63d4.png" srcset="/img/loading.gif" lazyload style="zoom:60%;" >
+
+<h3 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h3><p><strong>分布式锁：</strong></p>
+<ul>
+<li><p>设置热点数据永远不过期，由后台异步更新缓存，或者在热点数据准备要过期前，提前通知后台线程更新缓存以及重新设置过期时间</p>
+</li>
+<li><p>加分布式锁，保证同一时间只有一个业务线程更新缓存，未能获取互斥锁的请求，要么等待锁释放后重新读取缓存，要么就返回空值或者默认值。</p>
+<ul>
+<li>释放锁 del(lockKey)</li>
+<li>业务处理失败 expire(loclKey)</li>
+</ul>
+</li>
+</ul>
+<h4 id="application-yml"><a href="#application-yml" class="headerlink" title="application.yml"></a>application.yml</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment">#分布式锁</span><br><span class="hljs-attr">SETNX_LOCK_BASC:</span> <span class="hljs-string">SETNX_LOCK_BASC</span><br><span class="hljs-attr">SETNX_LOCK_DESC:</span> <span class="hljs-string">SETNX_LOCK_DESC</span><br><span class="hljs-attr">SETNX_LOCK_PARAM:</span> <span class="hljs-string">SETNX_LOCK_PARAM</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="service-ItemServiceImpl"><a href="#service-ItemServiceImpl" class="headerlink" title="service-ItemServiceImpl"></a>service-ItemServiceImpl</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 查询商品信息</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> itemId</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment"> */</span><br>   <span class="hljs-meta">@Override</span><br>   <span class="hljs-keyword">public</span> TbItem <span class="hljs-title function_">selectItemInfo</span><span class="hljs-params">(Long itemId)</span>&#123;<br>       <span class="hljs-comment">//1、先查询redis,如果有直接返回</span><br>       <span class="hljs-type">TbItem</span> <span class="hljs-variable">tbItem</span> <span class="hljs-operator">=</span> (TbItem) redisClient.get(ITEM_INFO+<span class="hljs-string">&quot;:&quot;</span>+itemId+<span class="hljs-string">&quot;:&quot;</span>+BASE);<br>       <span class="hljs-keyword">if</span>(tbItem!=<span class="hljs-literal">null</span>)&#123;<br>           <span class="hljs-keyword">return</span> tbItem;<br>       &#125;<br>       <span class="hljs-comment">/*****************解决缓存击穿***************/</span><br>       <span class="hljs-keyword">if</span>(redisClient.setnx(SETNX_LOCK_BASC+<span class="hljs-string">&quot;:&quot;</span>+itemId,itemId,<span class="hljs-number">5L</span>))&#123;<br>           <span class="hljs-comment">//2、再查询mysql,并把查询结果缓存到redis,并设置失效时间</span><br>           tbItem = tbItemMapper.selectByPrimaryKey(itemId);<br><br>           <span class="hljs-comment">/*****************解决缓存穿透*****************/</span><br>           <span class="hljs-keyword">if</span>(tbItem!=<span class="hljs-literal">null</span>)&#123;<br>               redisClient.set(ITEM_INFO+<span class="hljs-string">&quot;:&quot;</span>+itemId+<span class="hljs-string">&quot;:&quot;</span>+BASE,tbItem);<br>               redisClient.expire(ITEM_INFO+<span class="hljs-string">&quot;:&quot;</span>+itemId+<span class="hljs-string">&quot;:&quot;</span>+BASE,ITEM_INFO_EXPIRE);<br>           &#125;<span class="hljs-keyword">else</span>&#123;<br>               redisClient.set(ITEM_INFO+<span class="hljs-string">&quot;:&quot;</span>+itemId+<span class="hljs-string">&quot;:&quot;</span>+BASE,<span class="hljs-keyword">new</span> <span class="hljs-title class_">TbItem</span>());<br>               redisClient.expire(ITEM_INFO+<span class="hljs-string">&quot;:&quot;</span>+itemId+<span class="hljs-string">&quot;:&quot;</span>+BASE,<span class="hljs-number">30L</span>);<br>           &#125;<br>           redisClient.del(SETNX_LOCK_BASC+<span class="hljs-string">&quot;:&quot;</span>+itemId);<br>           <span class="hljs-keyword">return</span> tbItem;<br>       &#125;<span class="hljs-keyword">else</span>&#123;<br>           <span class="hljs-keyword">try</span> &#123;<br>               Thread.sleep(<span class="hljs-number">1000</span>);<br>           &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>               e.printStackTrace();<br>           &#125;<br>          <span class="hljs-keyword">return</span> selectItemInfo(itemId);<br>       &#125;<br>   &#125;<br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 根据商品 ID 查询商品介绍</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> itemId</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span><br><span class="hljs-comment"> */</span><br>   <span class="hljs-meta">@Override</span><br>   <span class="hljs-keyword">public</span> TbItemDesc <span class="hljs-title function_">selectItemDescByItemId</span><span class="hljs-params">(Long itemId)</span> &#123;<br>       <span class="hljs-comment">//1、先查询redis,如果有直接返回</span><br>       <span class="hljs-type">TbItemDesc</span> <span class="hljs-variable">tbItemDesc</span> <span class="hljs-operator">=</span> (TbItemDesc) redisClient.get(ITEM_INFO + <span class="hljs-string">&quot;:&quot;</span> + itemId + <br>                                                            <span class="hljs-string">&quot;:&quot;</span> + DESC);<br>       <span class="hljs-keyword">if</span>(tbItemDesc!=<span class="hljs-literal">null</span>)&#123;<br>           <span class="hljs-keyword">return</span> tbItemDesc;<br>       &#125;<br>       <span class="hljs-keyword">if</span>(redisClient.setnx(SETNX_DESC_LOCK_KEY+<span class="hljs-string">&quot;:&quot;</span>+itemId,itemId,<span class="hljs-number">30L</span>))&#123;<br>           <span class="hljs-comment">//2、再查询mysql,并把查询结果缓存到redis,并设置失效时间</span><br>           tbItemDesc = tbItemDescMapper.selectByPrimaryKey(itemId);<br><br>           <span class="hljs-keyword">if</span>(tbItemDesc!=<span class="hljs-literal">null</span>)&#123;<br>               redisClient.set(ITEM_INFO + <span class="hljs-string">&quot;:&quot;</span> + itemId + <span class="hljs-string">&quot;:&quot;</span> + DESC,tbItemDesc);<br>               redisClient.expire(ITEM_INFO + <span class="hljs-string">&quot;:&quot;</span> + itemId + <span class="hljs-string">&quot;:&quot;</span> + <br>                                  DESC,ITEM_INFO_EXPIRE);<br><br>           &#125;<span class="hljs-keyword">else</span>&#123;<br>               redisClient.set(ITEM_INFO + <span class="hljs-string">&quot;:&quot;</span> + itemId + <span class="hljs-string">&quot;:&quot;</span> + DESC,<span class="hljs-keyword">new</span> <span class="hljs-title class_">TbItemDesc</span>());<br>               redisClient.expire(ITEM_INFO + <span class="hljs-string">&quot;:&quot;</span> + itemId + <span class="hljs-string">&quot;:&quot;</span> + DESC,<span class="hljs-number">30L</span>);<br>           &#125;<br>           redisClient.del(SETNX_DESC_LOCK_KEY+<span class="hljs-string">&quot;:&quot;</span>+itemId);<br>           <span class="hljs-keyword">return</span> tbItemDesc;<br>       &#125;<span class="hljs-keyword">else</span>&#123;<br>           <span class="hljs-keyword">try</span> &#123;<br>               Thread.sleep(<span class="hljs-number">1000</span>);<br>           &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>               e.printStackTrace();<br>           &#125;<br>           <span class="hljs-keyword">return</span> selectItemDescByItemId(itemId);<br>       &#125;<br>   &#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h2><h3 id="问题描述-2"><a href="#问题描述-2" class="headerlink" title="问题描述"></a>问题描述</h3><p>缓存雪崩是指缓存中<strong>数据大批量到过期时间，而查询数据量巨大，引起数据库压力过大甚至宕机</strong>。</p>
+<img src="https://img-blog.csdnimg.cn/img_convert/717343a0da7a1b05edab1d1cdf8f28e5.png" srcset="/img/loading.gif" lazyload>
+
+<h3 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
+<li><p>缓存数据的过期时间设置随机，防止同一时间大量数据过期现象发生。</p>
+</li>
+<li><p>如果缓存数据库是分布式部署，将热点数据均匀分布在不同的缓存数据库中。</p>
+</li>
+<li><p>设置热点数据永远不过期。</p>
+</li>
+</ul>
+<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a target="_blank" rel="noopener" href="https://pdai.tech/md/db/nosql-redis/db-redis-x-cache.html#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8C%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7">Redis进阶 - 缓存问题：一致性, 穿击, 穿透, 雪崩, 污染等</a></p>
+<p><a target="_blank" rel="noopener" href="https://xiaolincoding.com/redis/cluster/cache_problem.html#%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9">什么是缓存雪崩、击穿、穿透？</a></p>
+<p><a target="_blank" rel="noopener" href="https://xiaolincoding.com/redis/">图解Redis体系</a></p>
+<p><a href="https://github.com/daydreamdev/MeetingFilm/blob/master/note/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8%E8%A7%A3%E5%86%B3%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F.md">布隆过滤器原理</a></p>
+<div>
+<hr>
+<script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script> 
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/@waline/client@v2/dist/waline.css"
+/>
+<div id="waline"></div>
+  <script>
+    Waline({
+      el: '#waline',
+      serverURL: 'https://vercel-project-4d7haxk1c-i-xiaoxin.vercel.app',
+    });
+  </script>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Mysql/">#Mysql</a>
+      
+        <a href="/tags/Redis/">#Redis</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Redis缓存雪崩、缓存击穿、缓存穿透</div>
+      <div>https://github.com/i-xiaoxin/2022/11/03/Redis缓存雪崩、缓存击穿、缓存穿透/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>xiaoxinlore</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年11月3日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/10/31/RabbitMQ%E5%8F%AF%E9%9D%A0%E6%B6%88%E6%81%AF%E6%9C%80%E7%BB%88%E4%B8%80%E8%87%B4%E6%80%A7/" title="RabbitMQ可靠消息最终一致性">
+                        <span class="hidden-mobile">RabbitMQ可靠消息最终一致性</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createCssLink('https://lib.baomitu.com/waline/2.6.3/waline.min.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/waline/2.6.3/waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://vercel-project-4d7haxk1c-i-xiaoxin.vercel.app","path":"window.location.pathname","meta":["nick","mail","link"],"requiredMeta":["nick"],"lang":"zh-CN","emoji":["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],"dark":"html[data-user-color-scheme=\"dark\"]","wordLimit":0,"pageSize":10},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
