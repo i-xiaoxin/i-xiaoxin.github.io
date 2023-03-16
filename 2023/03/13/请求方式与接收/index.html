@@ -16,24 +16,24 @@
   <meta name="author" content="xiaoxinlore">
   <meta name="keywords" content="java">
   
-    <meta name="description" content="前言在 SpringBoot 项目yml配置中，我们经常会使用两种占位符，它们分别是：  @*@  ${*}  代码案例 12345678910111213spring:  application:    name: @artifactId@ #占位符1  cloud:    nacos:      discovery:        server-addr: $&amp;#123;NACOS_HOST:">
+    <meta name="description" content="application&#x2F;x-www-form-urlencoded即application&#x2F;x-www-from-urlencoded，将表单内的数据转换为Key-Value。  POST 提交数据的方式了。浏览器的原生  表单，如果不设置 enctype 属性，那么最终就会以 application&#x2F;x-www-form-urlencoded 方式提交数据。 首先，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SpringBoot中yml占位符@*@与${*}">
-<meta property="og:url" content="https://github.com/i-xiaoxin/2023/02/09/SpringBoot%E4%B8%ADyml%E5%8D%A0%E4%BD%8D%E7%AC%A6@*@%E4%B8%8E$%7B*%7D/index.html">
+<meta property="og:title" content="HTTP请求与接收">
+<meta property="og:url" content="https://github.com/i-xiaoxin/2023/03/13/%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%E4%B8%8E%E6%8E%A5%E6%94%B6/index.html">
 <meta property="og:site_name" content="xiaoxinlore">
-<meta property="og:description" content="前言在 SpringBoot 项目yml配置中，我们经常会使用两种占位符，它们分别是：  @*@  ${*}  代码案例 12345678910111213spring:  application:    name: @artifactId@ #占位符1  cloud:    nacos:      discovery:        server-addr: $&amp;#123;NACOS_HOST:">
+<meta property="og:description" content="application&#x2F;x-www-form-urlencoded即application&#x2F;x-www-from-urlencoded，将表单内的数据转换为Key-Value。  POST 提交数据的方式了。浏览器的原生  表单，如果不设置 enctype 属性，那么最终就会以 application&#x2F;x-www-form-urlencoded 方式提交数据。 首先，">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-02-09T13:19:02.000Z">
-<meta property="article:modified_time" content="2023-02-09T05:31:33.918Z">
+<meta property="article:published_time" content="2023-03-13T13:09:02.000Z">
+<meta property="article:modified_time" content="2023-03-13T01:36:07.398Z">
 <meta property="article:author" content="xiaoxinlore">
-<meta property="article:tag" content="SpringBoot">
+<meta property="article:tag" content="HTTP">
 <meta name="twitter:card" content="summary_large_image">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>SpringBoot中yml占位符@*@与${*} - xiaoxinlore</title>
+  <title>HTTP请求与接收 - xiaoxinlore</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -219,13 +219,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/article6.webp') no-repeat center center; background-size: cover;">
+     style="background: url('/img/article3.webp') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="SpringBoot中yml占位符@*@与${*}"></span>
+            <span id="subtitle" data-typed-text="HTTP请求与接收"></span>
           
         </div>
 
@@ -236,8 +236,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-02-09 21:19" pubdate>
-          2023年2月9日 晚上
+        <time datetime="2023-03-13 21:09" pubdate>
+          2023年3月13日 晚上
         </time>
       </span>
     
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.4k 字
+          2.9k 字
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          20 分钟
+          25 分钟
         
       </span>
     
@@ -297,48 +297,47 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">SpringBoot中yml占位符@*@与${*}</h1>
+            <h1 style="display: none">HTTP请求与接收</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在 SpringBoot 项目yml配置中，我们经常会使用两种占位符，它们分别是：</p>
-<ul>
-<li>@*@ </li>
-<li>${*}</li>
-</ul>
-<p>代码案例</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">application:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">@artifactId@</span> <span class="hljs-comment">#占位符1</span><br>  <span class="hljs-attr">cloud:</span><br>    <span class="hljs-attr">nacos:</span><br>      <span class="hljs-attr">discovery:</span><br>        <span class="hljs-attr">server-addr:</span> <span class="hljs-string">$&#123;NACOS_HOST:127.0.0.1&#125;:$&#123;NACOS_PORT:8848&#125;</span> <span class="hljs-comment">#占位符2</span><br><br>      <span class="hljs-attr">config:</span><br>        <span class="hljs-attr">server-addr:</span> <span class="hljs-string">$&#123;spring.cloud.nacos.discovery.server-addr&#125;</span><br>        <span class="hljs-attr">file-extension:</span> <span class="hljs-string">yml</span><br>        <span class="hljs-attr">shared-configs:</span><br>          <span class="hljs-bullet">-</span> <span class="hljs-string">application-$&#123;spring.profiles.active&#125;.$&#123;spring.cloud.nacos.config.file-extension&#125;</span><br></code></pre></td></tr></table></figure>
-
-<h1 id=""><a href="#" class="headerlink" title="${*}"></a>${*}</h1><p>使用 @Value 注解注入属性时，只能使用 ${<em>} 占位符解析。</em></p>
-<p>@Value 注解的处理属于 Spring 核心框架逻辑，可以参见 <code>PlaceholderConfigurerSupport</code> 这个类，最终会执行 ${*} 占位符的解析。其中的冒号后面可以写默认值。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment">* PlaceholderConfigurerSupport部分关键代码</span><br><span class="hljs-comment">*/</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PlaceholderConfigurerSupport</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">PropertyResourceConfigurer</span><br>		<span class="hljs-keyword">implements</span> <span class="hljs-title class_">BeanNameAware</span>, BeanFactoryAware &#123;<br><br>	<span class="hljs-comment">/** Default placeholder prefix: &#123;<span class="hljs-doctag">@value</span>&#125;. */</span><br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">DEFAULT_PLACEHOLDER_PREFIX</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;$&#123;&quot;</span>;<br><br>	<span class="hljs-comment">/** Default placeholder suffix: &#123;<span class="hljs-doctag">@value</span>&#125;. */</span><br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">DEFAULT_PLACEHOLDER_SUFFIX</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&#125;&quot;</span>;<br><br>	<span class="hljs-comment">/** Default value separator: &#123;<span class="hljs-doctag">@value</span>&#125;. */</span><br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">DEFAULT_VALUE_SEPARATOR</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;:&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h1 id="maven-resources-plugin"><a href="#maven-resources-plugin" class="headerlink" title="maven-resources-plugin"></a>maven-resources-plugin</h1><p>替换资源文件中的占位符变量</p>
-<p>对于Maven标准的占位符变量，如${project.groupId}，${project.artifactId}，${project.version}，${project.basedir}等，只要在配置<resource>的时候，设置<filtering>true</filtering>即可，如下：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span><br>   <span class="hljs-tag">&lt;<span class="hljs-name">resources</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">resource</span>&gt;</span><br>          <span class="hljs-tag">&lt;<span class="hljs-name">directory</span>&gt;</span>src/main/resources<span class="hljs-tag">&lt;/<span class="hljs-name">directory</span>&gt;</span><br>              <span class="hljs-tag">&lt;<span class="hljs-name">includes</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">include</span>&gt;</span>**/*.txt<span class="hljs-tag">&lt;/<span class="hljs-name">include</span>&gt;</span><br>              <span class="hljs-tag">&lt;/<span class="hljs-name">includes</span>&gt;</span><br>              <span class="hljs-tag">&lt;<span class="hljs-name">excludes</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">exclude</span>&gt;</span>**/*test*.*<span class="hljs-tag">&lt;/<span class="hljs-name">exclude</span>&gt;</span><br>              <span class="hljs-tag">&lt;/<span class="hljs-name">excludes</span>&gt;</span><br>           <span class="hljs-tag">&lt;<span class="hljs-name">filtering</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">filtering</span>&gt;</span><br>       <span class="hljs-tag">&lt;/<span class="hljs-name">resource</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">resources</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span><br></code></pre></td></tr></table></figure>
-
-<ul>
-<li>默认占位符有两种，分别是 ${<em>} 和 @</em>@</li>
-<li>配置项 useDefaultDelimiters，可以控制是否使用默认占位符</li>
-<li>配置项 delimiter，既可以写默认占位符，也可以自定义占位符</li>
-</ul>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
-<li>默认占位符有两种，分别是 ${ * } 和 @ * @</li>
-<li>配置项 useDefaultDelimiters，可以控制是否使用默认占位符。如果为 true，则 ${<em>} 和 @</em>@ 这两种占位符始终有效，可以同时使用</li>
-<li>配置项 delimiter，既可以写默认占位符，也可以自定义占位符，比如上文中的 # * #</li>
-</ul>
-<p><strong>注意事项：</strong></p>
-<ul>
-<li>占位符必须成对使用，如果忘记写右边的，则不会被解析。</li>
-<li>本文搭建的 Demo 项目，使用了 spring-boot-starter-parent 作为 parent，但有时我们可能不会使用它。此时，maven-resources-plugin 插件需要我们手动引入，道理是一样的。</li>
-</ul>
-<p><strong>常见情况：</strong></p>
-<ul>
-<li>如果项目直接或间接引入 spring-boot-starter-parent 作为 parent，且没有手动配置 maven-resources-plugin 插件。则只能使用 @*@ 这一种占位符，这是在 spring-boot-starter-parent 指定的。</li>
-<li>如果项目没有引入 spring-boot-starter-parent 作为 parent，手动引入 maven-resources-plugin 插件，但没有指定任何 delimiter，也没有显式配置 useDefaultDelimiters 为 false，那么可以使用默认占位符 @<em>@ 或 ${</em>}，因为不配置 useDefaultDelimiters 的话，默认为 true。</li>
-</ul>
-<p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaoxi666/p/15676529.html">聊聊 SpringBoot 中的两种占位符：@<em>@ 和 ${</em>} </a></p>
+                <h2 id="application-x2F-x-www-form-urlencoded"><a href="#application-x2F-x-www-form-urlencoded" class="headerlink" title="application&#x2F;x-www-form-urlencoded"></a><strong>application&#x2F;x-www-form-urlencoded</strong></h2><p>即application&#x2F;x-www-from-urlencoded，将表单内的数据转换为Key-Value。</p>
+<p> POST 提交数据的方式了。浏览器的原生 <form> 表单，如果不设置 enctype 属性，那么最终就会以 application&#x2F;x-www-form-urlencoded 方式提交数据。</p>
+<p>首先，Content-Type 被指定为 application&#x2F;x-www-form-urlencoded；其次，提交的数据按照 key1&#x3D;val1&amp;key2&#x3D;val2 的方式进行编码，key 和 val 都进行了 URL 转码。大部分服务端语言都对这种方式很好的支持，常用的如jQuery中的ajax请求，<strong>Content-Type</strong> 默认值都是<strong>application&#x2F;x-www-form-urlencoded;charset&#x3D;utf-8</strong></p>
+<p>x-www-form-urlencoded：只能上传键值对，而且键值对都是通过&amp;间隔分开的</p>
+<h2 id="multipart-x2F-form-data"><a href="#multipart-x2F-form-data" class="headerlink" title="multipart&#x2F;form-data"></a><strong>multipart&#x2F;form-data</strong></h2><p>post请求方式，一般用来上传文件，各大服务器的支持也比较好。所以我们使用表单 上传文件时，必须让<form>表单的enctype属性值为 multipart&#x2F;form-data</p>
+<p>form-data对应的是页以form表单提交传值的情形</p>
+<p>等价于http请求中的multipart&#x2F;form-data,它会将表单的数据处理为一条消息，以标签为单元，用分隔符分开。既可以上传键值对，也可以上传文件。当上传的字段是文件时，会有Content-Type来表名文件类型；content-disposition，用来说明字段的一些信息；<br>由于有boundary隔离，所以multipart&#x2F;form-data既可以上传文件，也可以上传键值对，它采用了键值对的方式，所以可以上传多个文件</p>
+<p>浏览器原生支持的</p>
+<p>multipart&#x2F;form-data：可以上传文件或者键值对，最后都会转化为一条消息</p>
+<h2 id="application-x2F-json"><a href="#application-x2F-json" class="headerlink" title="application&#x2F;json"></a><strong>application&#x2F;json</strong></h2><p>application&#x2F;json作为响应头并不陌生，实际上，现在很多时候也把它作为请求头，用来告诉<strong>服务端消息主体是序列化的JSON字符串</strong>，除了低版本的IE，基本都支持。除了低版本的IE都支持JSON.stringify（）的方法，服务端也有处理JSON的函数，使用json不会有任何麻烦。</p>
+<h2 id="raw"><a href="#raw" class="headerlink" title="raw"></a>raw</h2><p>raw对应的是入参是任意格式的可以上传任意格式的【文本】，可以上传text、json、xml、html等</p>
+<h2 id="RequestParam"><a href="#RequestParam" class="headerlink" title="@RequestParam"></a>@RequestParam</h2><p>@RequestParam用来处理 Content-Type 为 application&#x2F;x-www-form-urlencoded 编码的内容，Content-Type默认为该属性。@RequestParam也可用于其它类型的请求，例如：POST、DELETE等请求。</p>
+<p>所以在postman中，要选择body的类型为 x-www-form-urlencoded，这样在headers中就自动变为了 Content-Type : application&#x2F;x-www-form-urlencoded 编码格式。<br>但是这样不支持批量插入数据啊，如果改用 json 字符串来传值的话，类型设置为 application&#x2F;json，点击发送的话，会报错，后台接收不到值，为 null。</p>
+<blockquote>
+<p>(@RequestParam Map map) application&#x2F;json时候，json字符串部分不可用，url中的?后面添加参数即可用，form-data、x-www-form-urlencoded时候可用，但是要将Headers里的Content-Type删掉</p>
+</blockquote>
+<blockquote>
+<p>(@RequestParam String waterEleId,@RequestParam String enterpriseName)<br>application&#x2F;json时候，json字符串部分不可用，url中的?后面添加参数即可用<br>form-data、x-www-form-urlencoded时候可用，且参数可以没有顺序（即前端传过来的参数或者url中的参数顺序不必和后台接口中的参数顺序一致，只要字段名相同就可以），但是要将Headers里的Content-Type删掉</p>
+</blockquote>
+<blockquote>
+<p>(@RequestParam Object object) 不管application&#x2F;json、form-data、x-www-form-urlencoded都不可用</p>
+</blockquote>
+<h2 id="RequestBody"><a href="#RequestBody" class="headerlink" title="@RequestBody"></a>@RequestBody</h2><p>注解@RequestBody接收的参数是来自requestBody中，即请求体。一般用于处理非 Content-Type: application&#x2F;x-www-form-urlencoded编码格式的数据，比如：application&#x2F;json、application&#x2F;xml等类型的数据。</p>
+<p>就application&#x2F;json类型的数据而言，使用注解@RequestBody可以将body里面所有的json数据传到后端，后端再进行解析。</p>
+<p>GET请求中，因为没有HttpEntity，所以@RequestBody并不适用。</p>
+<p>POST请求中，通过HttpEntity传递的参数，必须要在请求头中声明数据的类型Content-Type，SpringMVC通过使用</p>
+<blockquote>
+<p>(@RequestBody Map map) </p>
+<p>(@RequestBody Object object) application&#x2F;json时</p>
+<p>可用 form-data、x-www-form-urlencoded时候不可用</p>
+</blockquote>
+<h2 id="既不是-RequestBody也不是-RequestParam，没有指定参数哪种接收方式"><a href="#既不是-RequestBody也不是-RequestParam，没有指定参数哪种接收方式" class="headerlink" title="既不是@RequestBody也不是@RequestParam，没有指定参数哪种接收方式"></a>既不是@RequestBody也不是@RequestParam，没有指定参数哪种接收方式</h2><blockquote>
+<p>(Map map)<br>(Object object)<br>application&#x2F;json时候：json字符串部分不可用，url中的?后面添加参数不可用。<br>因为没有指定，它也不知道到底是用json字符串部分还是?后面添加参数部分，所以干脆都不可以用<br>form-data、x-www-form-urlencoded时都不可用</p>
+<p>(HttpServletRequest request)<br>application&#x2F;json不可用<br>form-data、x-www-form-urlencoded时可用</p>
+</blockquote>
+<h2 id="PathVariable"><a href="#PathVariable" class="headerlink" title="@PathVariable"></a>@PathVariable</h2><p>接收请求路径中占位符的值,<br>@PathVariable 注解可以将 URL 中占位符参数绑定到控制器处理方法的入参中；URL 中的 {xxx} 占位符可以通过 @PathVariable(“xxx“) 绑定到操作方法的入参中。</p>
 <div>
 <hr>
 <script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script> 
@@ -360,32 +359,11 @@
             <div>
               <div class="post-metas my-3">
   
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/SpringBoot/" class="category-chain-item">SpringBoot</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/SpringBoot/">#SpringBoot</a>
+        <a href="/tags/HTTP/">#HTTP</a>
       
     </div>
   
@@ -397,8 +375,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>SpringBoot中yml占位符@*@与${*}</div>
-      <div>https://github.com/i-xiaoxin/2023/02/09/SpringBoot中yml占位符@*@与${*}/</div>
+      <div>HTTP请求与接收</div>
+      <div>https://github.com/i-xiaoxin/2023/03/13/请求方式与接收/</div>
     </div>
     <div class="license-meta">
       
@@ -410,7 +388,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年2月9日</div>
+          <div>2023年3月13日</div>
         </div>
       
       
@@ -442,18 +420,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/03/11/JVM%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E/" title="JVM参数配置说明">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">JVM参数配置说明</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/01/08/IDEA%20MAC%E5%BF%AB%E6%8D%B7%E9%94%AE%E8%AF%B4%E6%98%8E/" title="IDEA Mac快捷键说明">
-                        <span class="hidden-mobile">IDEA Mac快捷键说明</span>
+                      <a href="/2023/03/13/Java%E5%AF%B9%E5%A7%93%E5%90%8D,%20%E6%89%8B%E6%9C%BA%E5%8F%B7,%20%E8%BA%AB%E4%BB%BD%E8%AF%81%E5%8F%B7,%20%E5%9C%B0%E5%9D%80%E8%BF%9B%E8%A1%8C%E8%84%B1%E6%95%8F/" title="Java数据脱敏工具类">
+                        <span class="hidden-mobile">Java数据脱敏工具类</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
