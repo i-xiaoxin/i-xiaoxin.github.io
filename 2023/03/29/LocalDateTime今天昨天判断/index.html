@@ -16,24 +16,25 @@
   <meta name="author" content="xiaoxinlore">
   <meta name="keywords" content="java">
   
-    <meta name="description" content="application&#x2F;x-www-form-urlencoded即application&#x2F;x-www-from-urlencoded，将表单内的数据转换为Key-Value。  POST 提交数据的方式了。浏览器的原生  表单，如果不设置 enctype 属性，那么最终就会以 application&#x2F;x-www-form-urlencoded 方式提交数据。 首先，">
+    <meta name="description" content="LocalDateTime今天昨天判断123456789101112131415161718192021222324252627282930313233&#x2F;*** 判断时间在今天显示 今天➕时间* 昨天 显示 昨天➕时间* 其他显示yyyy-MM-dd HH:mm:ss格式*&#x2F;public static void main(String[] args) &amp;#123;		LocalDateTime r">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HTTP请求与接收">
-<meta property="og:url" content="https://github.com/i-xiaoxin/2023/03/13/%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%E4%B8%8E%E6%8E%A5%E6%94%B6/index.html">
+<meta property="og:title" content="LocalDateTime今天昨天判断">
+<meta property="og:url" content="https://github.com/i-xiaoxin/2023/03/29/LocalDateTime%E4%BB%8A%E5%A4%A9%E6%98%A8%E5%A4%A9%E5%88%A4%E6%96%AD/index.html">
 <meta property="og:site_name" content="xiaoxinlore">
-<meta property="og:description" content="application&#x2F;x-www-form-urlencoded即application&#x2F;x-www-from-urlencoded，将表单内的数据转换为Key-Value。  POST 提交数据的方式了。浏览器的原生  表单，如果不设置 enctype 属性，那么最终就会以 application&#x2F;x-www-form-urlencoded 方式提交数据。 首先，">
+<meta property="og:description" content="LocalDateTime今天昨天判断123456789101112131415161718192021222324252627282930313233&#x2F;*** 判断时间在今天显示 今天➕时间* 昨天 显示 昨天➕时间* 其他显示yyyy-MM-dd HH:mm:ss格式*&#x2F;public static void main(String[] args) &amp;#123;		LocalDateTime r">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-03-13T13:09:02.000Z">
-<meta property="article:modified_time" content="2023-03-13T01:36:07.398Z">
+<meta property="article:published_time" content="2023-03-29T10:12:02.000Z">
+<meta property="article:modified_time" content="2023-03-29T09:12:26.236Z">
 <meta property="article:author" content="xiaoxinlore">
-<meta property="article:tag" content="HTTP">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Spring">
 <meta name="twitter:card" content="summary_large_image">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>HTTP请求与接收 - xiaoxinlore</title>
+  <title>LocalDateTime今天昨天判断 - xiaoxinlore</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -219,13 +220,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/article3.webp') no-repeat center center; background-size: cover;">
+     style="background: url('/img/article4.webp') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="HTTP请求与接收"></span>
+            <span id="subtitle" data-typed-text="LocalDateTime今天昨天判断"></span>
           
         </div>
 
@@ -236,8 +237,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-03-13 21:09" pubdate>
-          2023年3月13日 晚上
+        <time datetime="2023-03-29 18:12" pubdate>
+          2023年3月29日 晚上
         </time>
       </span>
     
@@ -248,7 +249,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.9k 字
+          1.1k 字
         
       </span>
     
@@ -259,7 +260,7 @@
         
         
         
-          25 分钟
+          9 分钟
         
       </span>
     
@@ -297,61 +298,14 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">HTTP请求与接收</h1>
+            <h1 style="display: none">LocalDateTime今天昨天判断</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="application-x2F-x-www-form-urlencoded"><a href="#application-x2F-x-www-form-urlencoded" class="headerlink" title="application&#x2F;x-www-form-urlencoded"></a><strong>application&#x2F;x-www-form-urlencoded</strong></h2><p>即application&#x2F;x-www-from-urlencoded，将表单内的数据转换为Key-Value。</p>
-<p> POST 提交数据的方式了。浏览器的原生 <form> 表单，如果不设置 enctype 属性，那么最终就会以 application&#x2F;x-www-form-urlencoded 方式提交数据。</p>
-<p>首先，Content-Type 被指定为 application&#x2F;x-www-form-urlencoded；其次，提交的数据按照 key1&#x3D;val1&amp;key2&#x3D;val2 的方式进行编码，key 和 val 都进行了 URL 转码。大部分服务端语言都对这种方式很好的支持，常用的如jQuery中的ajax请求，<strong>Content-Type</strong> 默认值都是<strong>application&#x2F;x-www-form-urlencoded;charset&#x3D;utf-8</strong></p>
-<p>x-www-form-urlencoded：只能上传键值对，而且键值对都是通过&amp;间隔分开的</p>
-<h2 id="multipart-x2F-form-data"><a href="#multipart-x2F-form-data" class="headerlink" title="multipart&#x2F;form-data"></a><strong>multipart&#x2F;form-data</strong></h2><p>post请求方式，一般用来上传文件，各大服务器的支持也比较好。所以我们使用表单 上传文件时，必须让<form>表单的enctype属性值为 multipart&#x2F;form-data</p>
-<p>form-data对应的是页以form表单提交传值的情形</p>
-<p>等价于http请求中的multipart&#x2F;form-data,它会将表单的数据处理为一条消息，以标签为单元，用分隔符分开。既可以上传键值对，也可以上传文件。当上传的字段是文件时，会有Content-Type来表名文件类型；content-disposition，用来说明字段的一些信息；<br>由于有boundary隔离，所以multipart&#x2F;form-data既可以上传文件，也可以上传键值对，它采用了键值对的方式，所以可以上传多个文件</p>
-<p>浏览器原生支持的</p>
-<p>multipart&#x2F;form-data：可以上传文件或者键值对，最后都会转化为一条消息</p>
-<h2 id="application-x2F-json"><a href="#application-x2F-json" class="headerlink" title="application&#x2F;json"></a><strong>application&#x2F;json</strong></h2><p>application&#x2F;json作为响应头并不陌生，实际上，现在很多时候也把它作为请求头，用来告诉<strong>服务端消息主体是序列化的JSON字符串</strong>，除了低版本的IE，基本都支持。除了低版本的IE都支持JSON.stringify（）的方法，服务端也有处理JSON的函数，使用json不会有任何麻烦。</p>
-<h2 id="raw"><a href="#raw" class="headerlink" title="raw"></a>raw</h2><p>raw对应的是入参是任意格式的可以上传任意格式的【文本】，可以上传text、json、xml、html等</p>
-<h2 id="RequestParam"><a href="#RequestParam" class="headerlink" title="@RequestParam"></a>@RequestParam</h2><p>@RequestParam用来处理 Content-Type 为 application&#x2F;x-www-form-urlencoded 编码的内容，Content-Type默认为该属性。@RequestParam也可用于其它类型的请求，例如：POST、DELETE等请求。</p>
-<p>所以在postman中，要选择body的类型为 x-www-form-urlencoded，这样在headers中就自动变为了 Content-Type : application&#x2F;x-www-form-urlencoded 编码格式。<br>但是这样不支持批量插入数据啊，如果改用 json 字符串来传值的话，类型设置为 application&#x2F;json，点击发送的话，会报错，后台接收不到值，为 null。</p>
-<blockquote>
-<p>(@RequestParam Map map) application&#x2F;json时候，json字符串部分不可用，url中的?后面添加参数即可用，form-data、x-www-form-urlencoded时候可用，但是要将Headers里的Content-Type删掉</p>
-</blockquote>
-<blockquote>
-<p>(@RequestParam String waterEleId,@RequestParam String enterpriseName)<br>application&#x2F;json时候，json字符串部分不可用，url中的?后面添加参数即可用<br>form-data、x-www-form-urlencoded时候可用，且参数可以没有顺序（即前端传过来的参数或者url中的参数顺序不必和后台接口中的参数顺序一致，只要字段名相同就可以），但是要将Headers里的Content-Type删掉</p>
-</blockquote>
-<blockquote>
-<p>(@RequestParam Object object) 不管application&#x2F;json、form-data、x-www-form-urlencoded都不可用</p>
-</blockquote>
-<h2 id="RequestBody"><a href="#RequestBody" class="headerlink" title="@RequestBody"></a>@RequestBody</h2><p>注解@RequestBody接收的参数是来自requestBody中，即请求体。一般用于处理非 Content-Type: application&#x2F;x-www-form-urlencoded编码格式的数据，比如：application&#x2F;json、application&#x2F;xml等类型的数据。</p>
-<p>就application&#x2F;json类型的数据而言，使用注解@RequestBody可以将body里面所有的json数据传到后端，后端再进行解析。</p>
-<p>GET请求中，因为没有HttpEntity，所以@RequestBody并不适用。</p>
-<p>POST请求中，通过HttpEntity传递的参数，必须要在请求头中声明数据的类型Content-Type，SpringMVC通过使用</p>
-<blockquote>
-<p>(@RequestBody Map map) </p>
-<p>(@RequestBody Object object) application&#x2F;json时</p>
-<p>可用 form-data、x-www-form-urlencoded时候不可用</p>
-</blockquote>
-<h2 id="既不是-RequestBody也不是-RequestParam，没有指定参数哪种接收方式"><a href="#既不是-RequestBody也不是-RequestParam，没有指定参数哪种接收方式" class="headerlink" title="既不是@RequestBody也不是@RequestParam，没有指定参数哪种接收方式"></a>既不是@RequestBody也不是@RequestParam，没有指定参数哪种接收方式</h2><blockquote>
-<p>(Map map)<br>(Object object)<br>application&#x2F;json时候：json字符串部分不可用，url中的?后面添加参数不可用。<br>因为没有指定，它也不知道到底是用json字符串部分还是?后面添加参数部分，所以干脆都不可以用<br>form-data、x-www-form-urlencoded时都不可用</p>
-<p>(HttpServletRequest request)<br>application&#x2F;json不可用<br>form-data、x-www-form-urlencoded时可用</p>
-</blockquote>
-<h2 id="PathVariable"><a href="#PathVariable" class="headerlink" title="@PathVariable"></a>@PathVariable</h2><p>接收请求路径中占位符的值,<br>@PathVariable 注解可以将 URL 中占位符参数绑定到控制器处理方法的入参中；URL 中的 {xxx} 占位符可以通过 @PathVariable(“xxx“) 绑定到操作方法的入参中。</p>
-<div>
-<hr>
-<script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script> 
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/@waline/client@v2/dist/waline.css"
-/>
-<div id="waline"></div>
-  <script>
-    Waline({
-      el: '#waline',
-      serverURL: 'https://vercel-project-4d7haxk1c-i-xiaoxin.vercel.app',
-    });
-  </script>
+                <h1 id="LocalDateTime今天昨天判断"><a href="#LocalDateTime今天昨天判断" class="headerlink" title="LocalDateTime今天昨天判断"></a>LocalDateTime今天昨天判断</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs java"><br><span class="hljs-comment">/**</span><br><span class="hljs-comment">* 判断时间在今天显示 今天➕时间</span><br><span class="hljs-comment">* 昨天 显示 昨天➕时间</span><br><span class="hljs-comment">* 其他显示yyyy-MM-dd HH:mm:ss格式</span><br><span class="hljs-comment">*/</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>		<span class="hljs-type">LocalDateTime</span> <span class="hljs-variable">record</span> <span class="hljs-operator">=</span> LocalDateTime.now().minusDays(<span class="hljs-number">5</span>);<br>		<span class="hljs-comment">// 今天结束 12点</span><br>		<span class="hljs-type">LocalDateTime</span> <span class="hljs-variable">endOfDay</span> <span class="hljs-operator">=</span> LocalDateTimeUtil.endOfDay(LocalDateTime.now());<br>		<span class="hljs-comment">// 今天起始 0点</span><br>		<span class="hljs-type">LocalDateTime</span> <span class="hljs-variable">beginOfDay</span> <span class="hljs-operator">=</span> LocalDateTimeUtil.beginOfDay(LocalDateTime.now());<br>		<span class="hljs-comment">// 昨天起始 0点</span><br>		<span class="hljs-type">LocalDateTime</span> <span class="hljs-variable">yesterday</span> <span class="hljs-operator">=</span> LocalDateTimeUtil.beginOfDay(beginOfDay.minusDays(<span class="hljs-number">1</span>));<br>		<span class="hljs-comment">// 判断时间在今天还是昨天</span><br>		<span class="hljs-keyword">if</span> (beginOfDay.isBefore(record) &amp;&amp; endOfDay.isAfter(record))&#123;<br>			<span class="hljs-comment">// 今天</span><br>			<span class="hljs-type">String</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> LocalDateTimeUtil.formatNormal(record);<br>			String[] split = s.split(<span class="hljs-string">&quot; &quot;</span>);<br>			<span class="hljs-keyword">if</span> (split.length == <span class="hljs-number">2</span>) &#123;<br>				System.out.println(<span class="hljs-string">&quot;今天&quot;</span> + <span class="hljs-string">&quot; &quot;</span> + split[<span class="hljs-number">1</span>]);<br>			&#125;<br>		&#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (yesterday.isBefore(record) &amp;&amp; beginOfDay.isAfter(record))&#123;<br>			<span class="hljs-comment">// 昨天</span><br>			<span class="hljs-type">String</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> LocalDateTimeUtil.formatNormal(record);<br>			String[] split = s.split(<span class="hljs-string">&quot; &quot;</span>);<br>			<span class="hljs-keyword">if</span> (split.length == <span class="hljs-number">2</span>) &#123;<br>				System.out.println(<span class="hljs-string">&quot;昨天&quot;</span> + <span class="hljs-string">&quot; &quot;</span> + split[<span class="hljs-number">1</span>]);<br>			&#125;<br>		&#125;<span class="hljs-keyword">else</span> &#123;<br>			System.out.println(LocalDateTimeUtil.formatNormal(record));<br>		&#125;<br>	&#125;<br></code></pre></td></tr></table></figure>
+
+
                 
               </div>
             
@@ -359,11 +313,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Other/" class="category-chain-item">Other</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/HTTP/">#HTTP</a>
+        <a href="/tags/Java/">#Java</a>
+      
+        <a href="/tags/Spring/">#Spring</a>
       
     </div>
   
@@ -375,8 +352,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>HTTP请求与接收</div>
-      <div>https://github.com/i-xiaoxin/2023/03/13/请求方式与接收/</div>
+      <div>LocalDateTime今天昨天判断</div>
+      <div>https://github.com/i-xiaoxin/2023/03/29/LocalDateTime今天昨天判断/</div>
     </div>
     <div class="license-meta">
       
@@ -388,7 +365,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年3月13日</div>
+          <div>2023年3月29日</div>
         </div>
       
       
@@ -420,9 +397,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/03/29/LocalDateTime%E4%BB%8A%E5%A4%A9%E6%98%A8%E5%A4%A9%E5%88%A4%E6%96%AD/" title="LocalDateTime今天昨天判断">
+                      <a href="/2023/04/03/DateUtils%E5%B7%A5%E5%85%B7%E7%B1%BB/" title="DateUtils工具类">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">LocalDateTime今天昨天判断</span>
+                        <span class="hidden-mobile">DateUtils工具类</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -430,8 +407,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/03/13/Java%E5%AF%B9%E5%A7%93%E5%90%8D,%20%E6%89%8B%E6%9C%BA%E5%8F%B7,%20%E8%BA%AB%E4%BB%BD%E8%AF%81%E5%8F%B7,%20%E5%9C%B0%E5%9D%80%E8%BF%9B%E8%A1%8C%E8%84%B1%E6%95%8F/" title="Java数据脱敏工具类">
-                        <span class="hidden-mobile">Java数据脱敏工具类</span>
+                      <a href="/2023/03/13/%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%E4%B8%8E%E6%8E%A5%E6%94%B6/" title="HTTP请求与接收">
+                        <span class="hidden-mobile">HTTP请求与接收</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
